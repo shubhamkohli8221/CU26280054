@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Custom Controls</title>
+    <style>
+        input {
+            display: none
+        }
+
+        label {
+            display: block;
+            margin: 12px;
+            font-family: Arial
+        }
+
+        .check,
+        .radio {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            border: 2px solid #555;
+            vertical-align: middle;
+            margin-right: 7px
+        }
+
+        .radio {
+            border-radius: 50%
+        }
+
+        input:checked~.check {
+            background: #333
+        }
+
+        input:checked~.radio {
+            background: #333
+        }
+    </style>
+</head>
+
+<body>
+    <label><input type="checkbox"><span class="check"></span>HTML</label>
+    <label><input type="checkbox"><span class="check"></span>CSS</label>
+    <label><input type="radio" name="g"><span class="radio"></span>Male</label>
+    <label><input type="radio" name="g"><span class="radio"></span>Female</label>
+</body>
+
+</html>

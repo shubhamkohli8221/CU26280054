@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Onboarding</title>
+    <style>
+        .step {
+            padding: 20px
+        }
+
+        .step2 {
+            display: none
+        }
+
+        .step3 {
+            display: none
+        }
+    </style>
+</head>
+
+<body>
+    <div class="step step1">
+        <h2>Step 1</h2><input placeholder="Name"><button onclick="show(2)">Next</button>
+    </div>
+    <div class="step step2">
+        <h2>Step 2</h2><input placeholder="Email"><button onclick="show(1)">Back</button><button
+            onclick="show(3)">Next</button>
+    </div>
+    <div class="step step3">
+        <h2>Step 3</h2>
+        <p>Registration Complete</p><button onclick="show(2)">Back</button>
+    </div>
+    <script>
+        function show(n) { document.querySelectorAll('.step').forEach(x => x.style.display = 'none'); document.querySelector('.step' + n).style.display = 'block' }
+    </script>
+</body>
+
+</html>

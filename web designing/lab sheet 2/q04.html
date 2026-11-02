@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Flex Layout</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial
+        }
+
+        .page {
+            display: flex;
+            height: 100vh
+        }
+
+        .nav {
+            width: 25%;
+            padding: 20px;
+            background: #eee
+        }
+
+        .main {
+            flex: 1
+        }
+
+        .header {
+            padding: 20px;
+            background: #ddd
+        }
+
+        .content {
+            padding: 20px
+        }
+    </style>
+</head>
+
+<body>
+    <div class="page">
+        <div class="nav">
+            <h3>Navigation</h3>Home<br>About<br>Contact
+        </div>
+        <div class="main">
+            <div class="header">
+                <h2>Header</h2>
+            </div>
+            <div class="content">
+                <h2>Content</h2>
+                <p>Welcome.</p>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

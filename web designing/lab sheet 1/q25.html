@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Survey Form</title>
+</head>
+<body>
+    <h1>Student Survey</h1>
+    <form action="#" method="post">
+        <fieldset>
+            <legend>Personal Information</legend>
+            <p><label for="name">Name:</label> <input type="text" id="name" name="name" required></p>
+            <p><label for="email">Email:</label> <input type="email" id="email" name="email" required></p>
+        </fieldset>
+        <fieldset>
+            <legend>Course Feedback</legend>
+            <label for="rating">How would you rate the course?</label>
+            <select id="rating" name="rating">
+                <option value="excellent">Excellent</option>
+                <option value="good">Good</option>
+                <option value="average">Average</option>
+            </select>
+            <p><label for="suggestions">Suggestions:</label><br>
+                <textarea id="suggestions" name="suggestions" rows="4" cols="35"></textarea>
+            </p>
+        </fieldset>
+        <button type="submit">Submit Survey</button>
+    </form>
+</body>
+</html>

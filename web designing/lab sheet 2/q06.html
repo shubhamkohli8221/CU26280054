@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Grid Form</title>
+    <style>
+        form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            width: 500px;
+            margin: 30px auto
+        }
+
+        input,
+        select,
+        button {
+            padding: 9px
+        }
+    </style>
+</head>
+
+<body>
+    <form><input placeholder="First Name"><input placeholder="Last Name"><input placeholder="Email"><input
+            placeholder="Phone"><select>
+            <option>Course</option>
+            <option>MCA</option>
+        </select><input placeholder="City"><button>Submit</button></form>
+</body>
+
+</html>

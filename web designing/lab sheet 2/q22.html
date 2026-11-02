@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Newsletter</title>
+    <style>
+        .box {
+            width: 300px;
+            margin: 80px auto;
+            font-family: Arial
+        }
+
+        .field {
+            position: relative
+        }
+
+        .field input {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 12px;
+            border: 1px solid #777
+        }
+
+        .field label {
+            position: absolute;
+            left: 10px;
+            top: 12px;
+            background: white;
+            padding: 0 4px;
+            transition: .2s;
+            color: #777
+        }
+
+        .field input:focus+label,
+        .field input:not(:placeholder-shown)+label {
+            top: -8px;
+            font-size: 12px;
+            color: #333
+        }
+    </style>
+</head>
+
+<body>
+    <div class="box">
+        <h2>Newsletter</h2>
+        <div class="field"><input id="email" type="email" placeholder=" "><label for="email">Email Address</label></div>
+        <br><button>Subscribe</button>
+    </div>
+</body>
+
+</html>
