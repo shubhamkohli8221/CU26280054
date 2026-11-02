@@ -1,0 +1,355 @@
+#Q1
+touch notes.txt
+ls -l notes.txt
+------------------------------------------------
+
+
+
+#Q2
+chmod 644 notes.txt
+ls -l notes.txt
+------------------------------------------------
+
+
+
+#Q3
+chmod 600 notes.txt
+ls -l notes.txt
+------------------------------------------------
+
+
+
+#Q4
+touch script.sh
+chmod u+x script.sh
+ls -l script.sh
+------------------------------------------------
+
+
+
+#Q5
+whoami
+ls -l notes.txt
+------------------------------------------------
+
+
+
+#Q6
+ps
+------------------------------------------------
+
+
+
+#Q7
+ps aux
+ps aux | tail -n +2 | wc -l
+------------------------------------------------
+
+
+
+#Q8
+sleep 60 &
+jobs
+------------------------------------------------
+
+
+
+#Q9
+sleep 60 &
+jobs -l
+kill <PID>
+------------------------------------------------
+
+
+
+#Q10
+apt search '^tree$'
+dnf search tree
+------------------------------------------------
+
+
+
+#Q11
+umask
+#Q12
+chmod g-w document.txt
+ls -l document.txt
+------------------------------------------------
+
+
+
+#Q13
+fg %1
+------------------------------------------------
+
+
+
+#Q14
+bg %1
+------------------------------------------------
+
+
+
+#Q15
+uname -a
+------------------------------------------------
+
+
+
+#Q16
+ps -u "$USER" 
+------------------------------------------------
+
+
+
+#Q17
+sleep 60 &
+pkill sleep
+------------------------------------------------
+
+
+
+#Q18
+sudo apt update
+------------------------------------------------
+
+
+
+#Q19
+apt list --installed
+dnf list installed
+------------------------------------------------
+
+
+
+#Q20
+sudo chown "$USER" script.sh
+ls -l script.sh
+------------------------------------------------
+
+
+
+#Q21
+chmod 750 script.sh
+------------------------------------------------
+
+
+
+#Q22
+chmod 700 file
+
+chmod 007 file
+------------------------------------------------
+
+
+
+#Q23
+sudo chown student:student file
+------------------------------------------------
+
+
+
+#Q24
+top
+------------------------------------------------
+
+
+
+#Q25
+sleep 100 &
+sleep 200 &
+jobs
+fg %1
+------------------------------------------------
+
+
+
+#Q26
+pkill sleep
+------------------------------------------------
+
+
+
+#Q27
+sudo apt update
+sudo apt install tree
+tree ~
+
+sudo dnf install tree
+tree ~
+------------------------------------------------
+
+
+
+#Q28
+sudo apt remove tree
+apt list --installed 2>/dev/null | grep '^tree/'
+
+sudo dnf remove tree
+dnf list installed | grep '^tree'
+------------------------------------------------
+
+
+
+#Q29
+umask
+touch test_mask.txt
+ls -l test_mask.txt
+------------------------------------------------
+
+
+
+#Q30
+ps aux | grep "$USER"
+------------------------------------------------
+
+
+
+#Q31
+sudo chgrp devteam project_dir
+ls -ld project_dir
+------------------------------------------------
+
+
+
+#Q32
+nice -n 10 sleep 300 &
+ps -o pid,ni,comm -C sleep
+------------------------------------------------
+
+
+
+#Q33
+ps -ef | grep sleep
+renice 10 -p <PID>
+ps -o pid,ni,comm -p <PID>
+------------------------------------------------
+
+
+
+#Q34
+sudo apt update
+sudo apt install apache2
+systemctl status apache2
+
+sudo apt install nginx
+systemctl status nginx
+
+sudo dnf install httpd
+systemctl status httpd
+------------------------------------------------
+
+
+
+#Q35
+sudo apt update
+sudo apt install <package>
+------------------------------------------------
+
+
+
+#Q36
+#!/bin/bash
+echo "Linux administration lab"
+
+chmod +x script.sh
+./script.sh
+------------------------------------------------
+
+
+
+#Q37
+chmod u=rw,g=r,o= shared.txt
+
+chmod 640 shared.txt
+------------------------------------------------
+
+
+
+#Q38
+nice -n 15 sleep 300 &
+top
+------------------------------------------------
+
+
+
+#Q39
+kill 1234
+kill -9 1234
+------------------------------------------------
+
+
+
+#Q40
+ps aux --sort=-%cpu | head -5
+------------------------------------------------
+
+
+
+#Q41
+find . -type f -name "*.sh" -exec chmod +x {} +
+------------------------------------------------
+
+
+
+#Q42
+------------------------------------------------
+
+
+
+#Q43
+dpkg -L tree
+
+rpm -ql tree
+------------------------------------------------
+
+
+
+#Q44
+------------------------------------------------
+
+
+
+#Q45
+touch file1.txt file2.txt
+sudo chown user1 file1.txt
+sudo chown user2 file2.txt
+
+find . -type f -user user1 -print
+------------------------------------------------
+
+
+
+#Q46
+sudo chmod u+s custom_tool
+sudo chmod 4755 custom_tool
+------------------------------------------------
+
+
+
+#Q47
+sudo chmod 2775 /shared_dir
+------------------------------------------------
+
+
+
+#Q48
+sudo chmod o+t /public_tmp
+sudo chmod 1777 /public_tmp
+------------------------------------------------
+
+
+
+#Q49
+sleep 300
+jobs
+bg %1
+fg %1
+------------------------------------------------
+
+
+
+#Q50
+pid=$(ps -eo pid,comm,%mem --sort=-%mem | sed -n '2p' | awk '{print $1}')
+ps -p "$pid" -o pid,ppid,user,%mem,%cpu,comm,args > top_memory.log
+kill -TERM "$pid"

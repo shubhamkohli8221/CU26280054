@@ -1,0 +1,214 @@
+#Q1
+whoami
+id
+id -un
+id -u
+id -g
+id -G
+id -Gn
+groups
+------------------------------------------------------------
+
+
+
+#Q2
+grep '^labuser1:' /etc/passwd
+grep "^$USER:" /etc/passwd
+getent passwd $USER
+------------------------------------------------------------
+
+
+
+#Q3
+sudo passwd -S labuser1
+------------------------------------------------------------
+
+
+
+#Q4
+sudo useradd labuser1
+id labuser1
+grep '^labuser1:' /etc/passwd
+getent passwd labuser1
+------------------------------------------------------------
+
+
+#Q5
+sudo useradd -m labuser2
+ls -ld /home/labuser2
+ls -la /home/labuser2
+grep '^labuser2:' /etc/passwd
+------------------------------------------------------------
+
+
+
+#Q6
+sudo useradd -m -s /bin/bash labuser3
+grep '^labuser3:' /etc/passwd
+getent passwd labuser3 | cut -d: -f7
+------------------------------------------------------------
+
+
+
+#Q7
+sudo passwd labuser1
+sudo passwd -S labuser1
+------------------------------------------------------------
+
+
+
+#Q8
+sudo passwd labuser1
+sudo passwd -S labuser1
+sudo chage -l labuser1
+------------------------------------------------------------
+
+
+
+#Q9
+sudo usermod -s /bin/bash labuser2
+grep '^labuser2:' /etc/passwd
+getent passwd labuser2 | cut -d: -f7
+------------------------------------------------------------
+
+
+
+#Q10
+sudo -u labuser2 touch /home/labuser2/testfile.txt
+
+sudo usermod -d /home/labuser2_new labuser2
+grep '^labuser2:' /etc/passwd
+ls -ld /home/labuser2_new
+ls -l /home/labuser2
+
+
+sudo usermod -m -d /home/labuser2_moved labuser2
+grep '^labuser2:' /etc/passwd
+ls -l /home/labuser2_moved
+------------------------------------------------------------
+
+
+
+#Q11
+sudo groupadd userlabgroup
+sudo usermod -aG userlabgroup labuser1
+id labuser1
+groups labuser1
+getent group userlabgroup
+------------------------------------------------------------
+
+
+
+#Q12
+sudo passwd labuser3
+
+sudo usermod -L labuser3
+sudo passwd -S labuser3
+sudo grep '^labuser3:' /etc/shadow
+
+sudo usermod -U labuser3
+sudo passwd -S labuser3
+sudo grep '^labuser3:' /etc/shadow
+------------------------------------------------------------
+
+
+
+#Q13
+sudo chage -l labuser3
+------------------------------------------------------------
+
+
+
+#Q14
+sudo chage -E 2026-12-31 labuser3
+
+sudo chage -l labuser3 | grep "Account expires"
+sudo grep '^labuser3:' /etc/shadow
+------------------------------------------------------------
+
+
+
+#Q15
+sudo usermod -g userlabgroup labuser1
+id labuser1
+id -gn labuser1
+grep '^labuser1:' /etc/passwd
+getent group userlabgroup
+------------------------------------------------------------
+
+
+
+#Q16
+id labuser1
+groups labuser1
+getent passwd labuser1
+getent group | grep labuser1
+getent group userlabgroup
+getent group labuser1
+------------------------------------------------------------
+
+
+
+#Q17
+sudo userdel labuser1
+grep '^labuser1:' /etc/passwd || echo "labuser1 removed from /etc/passwd"
+id labuser1
+getent passwd labuser1
+
+ls -ld /home/labuser1
+------------------------------------------------------------
+
+
+
+#Q18
+sudo userdel -r labuser2
+
+grep '^labuser2:' /etc/passwd || echo "labuser2 removed"
+id labuser2
+ls -ld /home/labuser2 /home/labuser2_new /home/labuser2_moved
+------------------------------------------------------------
+
+
+
+#Q19
+sudo useradd -m labuser4
+sudo passwd labuser4
+sudo usermod -s /bin/bash labuser4
+sudo groupadd labgroup4
+sudo usermod -aG labgroup4 labuser4
+sudo usermod -L labuser4
+sudo passwd -S labuser4
+sudo usermod -U labuser4
+sudo passwd -S labuser4
+getent passwd labuser4
+id labuser4
+groups labuser4
+sudo passwd -S labuser4
+sudo chage -l labuser4
+ls -ld /home/labuser4
+------------------------------------------------------------
+
+
+
+#Q20
+sudo userdel -r labuser3
+sudo userdel -r labuser4
+sudo userdel -r labuser1 2>/dev/null
+sudo userdel -r labuser2 2>/dev/null
+
+sudo groupdel userlabgroup
+sudo groupdel labgroup4
+
+
+
+sudo rm -rf /home/labuser1 /home/labuser2 /home/labuser2_new /home/labuser2_moved /home/labuser3 /home/labuser4
+
+
+grep -E 'labuser|userlabgroup|labgroup4' /etc/passwd /etc/group /etc/shadow /etc/gshadow \
+  || echo "All lab users and groups removed"
+ls -d /home/labuser* 2>/dev/null || echo "No lab home directories remain"
+
+awk -F: '$3 < 1000 {print $1, $3, $7}' /etc/passwd
+sudo pwck -r
+sudo grpck -r
+ls -l /etc/passwd /etc/shadow /etc/group

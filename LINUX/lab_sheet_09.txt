@@ -1,0 +1,253 @@
+#Q1
+------------------------------------------------------------
+df
+df -T
+df -a
+------------------------------------------------------------
+
+
+
+#Q2
+------------------------------------------------------------
+df -h
+df -hT
+------------------------------------------------------------
+
+
+
+#Q3
+------------------------------------------------------------
+du
+du -s
+du -a
+du -a | head
+------------------------------------------------------------
+
+
+
+#Q4
+------------------------------------------------------------
+du -h
+du -h --max-depth=1
+du -h --max-depth=1 ~ | sort -hr | head
+sudo du -h --max-depth=1 / 2>/dev/null | sort -hr | head
+------------------------------------------------------------
+
+
+
+#Q5
+------------------------------------------------------------
+du -sh /var/log
+du -h /var/log
+du -h --max-depth=1 /var/log
+du -ch /var/log/*.log | tail -1
+------------------------------------------------------------
+
+
+
+#Q6
+------------------------------------------------------------
+lsblk
+lsblk -a
+lsblk -p
+------------------------------------------------------------
+
+
+
+#Q7
+------------------------------------------------------------
+lsblk
+lsblk -o NAME,SIZE,TYPE,MOUNTPOINT
+------------------------------------------------------------
+
+
+
+#Q8
+------------------------------------------------------------
+lsblk -f
+lsblk -o NAME,FSTYPE,LABEL,UUID,SIZE,MOUNTPOINT
+sudo blkid
+------------------------------------------------------------
+
+
+
+#Q9
+------------------------------------------------------------
+findmnt
+findmnt -t ext4,xfs
+findmnt /
+findmnt --df
+mount | column -t | head
+cat /proc/mounts | head
+------------------------------------------------------------
+
+#Q10
+------------------------------------------------------------
+sudo mkdir -p /mnt/labdisk
+ls -ld /mnt/labdisk
+stat /mnt/labdisk
+test -d /mnt/labdisk && echo "mount point exists"
+------------------------------------------------------------
+
+
+
+#Q11
+------------------------------------------------------------
+dd if=/dev/zero of=$HOME/labdisk.img bs=1M count=200
+mkfs.ext4 -F $HOME/labdisk.img
+sudo mount -o loop $HOME/labdisk.img /mnt/labdisk
+findmnt /mnt/labdisk
+mount | grep labdisk
+lsblk | grep labdisk
+df -h /mnt/labdisk
+------------------------------------------------------------
+
+#Q12
+------------------------------------------------------------
+df -h /mnt/labdisk
+df -hT /mnt/labdisk
+------------------------------------------------------------
+
+
+
+#Q13
+------------------------------------------------------------
+echo "Hello from labdisk" | sudo tee /mnt/labdisk/testfile.txt
+ls -l /mnt/labdisk
+cat /mnt/labdisk/testfile.txt
+df /mnt/labdisk/testfile.txt
+findmnt -T /mnt/labdisk/testfile.txt
+du -sh /mnt/labdisk
+df -h /mnt/labdisk
+------------------------------------------------------------
+
+
+
+#Q14
+------------------------------------------------------------
+sudo umount /mnt/labdisk
+findmnt /mnt/labdisk || echo "not mounted"
+mount | grep labdisk || echo "not in mount list"
+df -h | grep labdisk || echo "not listed in df"
+ls -l /mnt/labdisk
+------------------------------------------------------------
+
+
+
+#Q15
+------------------------------------------------------------
+sudo mount -o loop $HOME/labdisk.img /mnt/labdisk
+cd /mnt/labdisk
+sudo umount /mnt/labdisk
+fuser -vm /mnt/labdisk
+lsof +D /mnt/labdisk
+lsof /mnt/labdisk
+cd ~
+sudo umount /mnt/labdisk
+findmnt /mnt/labdisk || echo "unmounted successfully"
+------------------------------------------------------------
+
+
+
+#Q16
+------------------------------------------------------------
+LOOPDEV=$(sudo losetup --find --show $HOME/labdisk.img)
+echo $LOOPDEV
+sudo fdisk -l $LOOPDEV
+sudo fdisk -l /dev/sda
+sudo parted /dev/sda print
+sudo lsblk /dev/sda
+sudo losetup -d $LOOPDEV
+------------------------------------------------------------
+
+
+
+#Q17
+------------------------------------------------------------
+dd if=/dev/zero of=$HOME/testdisk.img bs=1M count=300
+TESTDEV=$(sudo losetup --find --show --partscan $HOME/testdisk.img)
+echo $TESTDEV
+lsblk $TESTDEV
+
+sudo parted -s $TESTDEV mklabel msdos
+sudo parted -s $TESTDEV mkpart primary ext4 1MiB 200MiB
+sudo partprobe $TESTDEV
+lsblk $TESTDEV
+sudo fdisk -l $TESTDEV
+sudo parted $TESTDEV print
+------------------------------------------------------------
+
+
+
+#Q18
+------------------------------------------------------------
+sudo mkfs.ext4 ${TESTDEV}p1
+sudo mount ${TESTDEV}p1 /mnt/labdisk
+df -hT /mnt/labdisk
+lsblk -f $TESTDEV
+findmnt /mnt/labdisk
+findmnt ${TESTDEV}p1
+------------------------------------------------------------
+
+
+
+#Q19
+------------------------------------------------------------
+cd ~
+sudo umount /mnt/labdisk
+findmnt /mnt/labdisk || echo "not mounted"
+ls -ld /mnt/labdisk
+ls -l /mnt/labdisk
+lsblk $TESTDEV
+lsblk -f $TESTDEV
+sudo blkid ${TESTDEV}p1
+sudo fdisk -l $TESTDEV
+df -h | grep labdisk || echo "not listed in df"
+------------------------------------------------------------
+
+
+
+#Q20
+------------------------------------------------------------
+lsblk
+lsblk -f
+sudo fdisk -l 2>/dev/null | head -30
+
+df -hT
+du -sh /var/log 2>/dev/null
+du -h --max-depth=1 ~ | sort -hr | head -5
+
+sudo mkdir -p /mnt/labdisk
+dd if=/dev/zero of=$HOME/workflow.img bs=1M count=300
+WFDEV=$(sudo losetup --find --show --partscan $HOME/workflow.img)
+sudo parted -s $WFDEV mklabel msdos mkpart primary ext4 1MiB 200MiB
+sudo partprobe $WFDEV
+sudo mkfs.ext4 ${WFDEV}p1
+lsblk $WFDEV
+
+sudo mount ${WFDEV}p1 /mnt/labdisk
+findmnt /mnt/labdisk
+df -h /mnt/labdisk
+
+echo "Workflow test data" | sudo tee /mnt/labdisk/data.txt
+sudo mkdir /mnt/labdisk/docs
+ls -l /mnt/labdisk
+cat /mnt/labdisk/data.txt
+du -sh /mnt/labdisk
+df -h /mnt/labdisk
+
+cd ~
+sudo umount /mnt/labdisk
+findmnt /mnt/labdisk || echo "unmounted"
+
+lsblk $WFDEV
+df -h | grep labdisk || echo "no labdisk in df"
+ls -ld /mnt/labdisk
+
+sudo losetup -a
+sudo losetup -d $WFDEV
+sudo losetup -d $TESTDEV
+rm -f $HOME/labdisk.img $HOME/testdisk.img $HOME/workflow.img
+sudo rmdir /mnt/labdisk
+lsblk
+sudo losetup -a

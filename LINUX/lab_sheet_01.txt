@@ -1,0 +1,275 @@
+#Q1
+pwd
+-------------------------------------------------
+
+
+#Q2
+ls
+-------------------------------------------------
+
+
+#Q3
+ls -a
+-------------------------------------------------
+
+
+#Q4
+ls -lh
+-------------------------------------------------
+
+
+#Q5
+mkdir myfirstlab
+-------------------------------------------------
+
+
+#Q6
+cd myfirstlab
+-------------------------------------------------
+
+
+#Q7
+touch a.txt b.txt c.txt
+-------------------------------------------------
+
+
+#Q8
+cat /etc/os-release
+-------------------------------------------------
+
+
+#Q9
+whoami
+-------------------------------------------------
+
+
+#Q10
+hostname
+-------------------------------------------------
+
+
+#Q11
+df -h
+-------------------------------------------------
+
+
+#Q12
+free -h
+-------------------------------------------------
+
+
+#Q13
+uptime
+-------------------------------------------------
+
+
+#Q14
+uname -a
+-------------------------------------------------
+
+
+#Q15
+man ls
+-------------------------------------------------
+
+
+#Q16
+cp --help
+-------------------------------------------------
+
+
+#Q17
+whatis mv
+-------------------------------------------------
+
+
+#Q18
+cd ~
+-------------------------------------------------
+
+
+#Q19
+mkdir -p project/src/data
+-------------------------------------------------
+
+
+#Q20
+rm myfirstlab/c.txt
+-------------------------------------------------
+
+
+#Q21
+echo "Alice" >> students.txt
+echo "Bob" >> students.txt
+echo "Charlie" >> students.txt
+echo "David" >> students.txt
+echo "Emma" >> students.txt
+-------------------------------------------------
+
+
+#Q22
+head -n 2 students.txt
+-------------------------------------------------
+
+
+#Q23
+tail -n 2 students.txt
+-------------------------------------------------
+
+
+#Q24
+mkdir backup
+cp students.txt backup/
+-------------------------------------------------
+
+
+#Q25
+mv students.txt class_list.txt
+-------------------------------------------------
+
+
+#Q26
+grep "a" class_list.txt
+-------------------------------------------------
+
+
+#Q27
+grep -n "Bob" class_list.txt
+-------------------------------------------------
+
+
+#Q28
+chmod 600 class_list.txt
+ls -l class_list.txt
+-------------------------------------------------
+
+
+#Q29
+find ~ -name "*.txt"
+-------------------------------------------------
+
+
+#Q30
+wc -l class_list.txt
+-------------------------------------------------
+
+
+#Q31
+head -n 5 /etc/passwd
+-------------------------------------------------
+
+
+#Q32
+tail -n 5 /var/log/syslog
+(or, if the file does not exist)
+tail -n 5 /var/log/dpkg.log
+-------------------------------------------------
+
+
+#Q33
+cp -r project/ project_backup/
+-------------------------------------------------
+
+
+#Q34
+less somelargefile.txt
+(Press 'q' to quit the pager)
+-------------------------------------------------
+
+
+#Q35
+mkdir -p archive
+mv a.txt b.txt archive/
+-------------------------------------------------
+
+
+#Q36
+mkdir logs
+cd logs
+for i in {1..10}; do echo "This is dummy log line $i" >> app.log; done
+tail -n 3 app.log
+-------------------------------------------------
+
+
+#Q37
+find . -name "*.log" -exec cat {} \;
+-------------------------------------------------
+
+
+#Q38
+grep -r "error" .
+-------------------------------------------------
+
+
+#Q39
+touch test.sh
+chmod +x test.sh
+echo "# Permission string rwxr-xr-- means: owner has read/write/execute, group has read/execute, others have read only" >> test.sh
+-------------------------------------------------
+
+
+#Q40
+mkdir demo && cd demo && ls
+-------------------------------------------------
+
+
+#Q41
+find ~ -name "*.txt" | wc -l
+-------------------------------------------------
+
+
+#Q42
+find /var/log -type d
+-------------------------------------------------
+
+
+#Q43
+grep -i "swap" /etc/fstab
+-------------------------------------------------
+
+
+#Q44
+du -sh foldername
+-------------------------------------------------
+
+
+#Q45
+ls -lS | head -n 4
+(the first line is the "total" summary line, so head -n 4 gives the top 3 largest files after it)
+-------------------------------------------------
+
+
+#Q46
+Explanation:
+Running "rm -rf *" in an unverified path is hazardous because it recursively and forcibly deletes every
+file and subdirectory in the current directory without asking for confirmation. If you are in the wrong
+directory (e.g., "/" or your home directory instead of a temp folder), this command can permanently wipe
+out critical system files or personal data with no warning and no way to undo it, since rm does not move
+files to a trash/recycle bin.
+
+Safety habit: Always run "pwd" first to confirm your current directory, and use "ls" to see exactly what
+will be deleted before running any "rm -rf" command. It is also good practice to first run "rm -ri *"
+(interactive mode) or do a dry run with "ls" matching the same pattern you intend to delete.
+-------------------------------------------------
+
+
+#Q47
+touch existingfile.txt
+-------------------------------------------------
+
+
+#Q48
+printf "apple\nbanana\napple\norange\nbanana\napple\n" > duplicates.txt
+sort duplicates.txt | uniq
+-------------------------------------------------
+
+
+#Q49
+uname -a > sys_info.txt
+cat sys_info.txt
+-------------------------------------------------
+
+
+#Q50
+find /var/log -mtime -7
+-------------------------------------------------

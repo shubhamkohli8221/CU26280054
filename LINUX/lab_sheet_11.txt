@@ -1,0 +1,229 @@
+#Q1
+------------------------------------------------------------
+mkdir archive_lab
+echo "This is file one" > archive_lab/file1.txt
+echo "This is file two" > archive_lab/file2.txt
+echo "This is file three" > archive_lab/file3.txt
+ls -l archive_lab
+cat archive_lab/*.txt
+------------------------------------------------------------
+
+
+
+#Q2
+------------------------------------------------------------
+tar -cvf files.tar -C archive_lab .
+ls -l files.tar
+file files.tar
+------------------------------------------------------------
+
+
+
+#Q3
+------------------------------------------------------------
+tar -tvf files.tar
+------------------------------------------------------------
+
+
+
+#Q4
+------------------------------------------------------------
+mkdir extracted_tar
+tar -xvf files.tar -C extracted_tar
+ls -l extracted_tar
+cat extracted_tar/file1.txt
+------------------------------------------------------------
+
+
+
+#Q5
+------------------------------------------------------------
+cp archive_lab/file1.txt sample.txt
+ls -l sample.txt
+gzip sample.txt
+ls -l sample.txt*
+file sample.txt.gz
+------------------------------------------------------------
+
+
+#Q6
+------------------------------------------------------------
+gunzip sample.txt.gz
+ls -l sample.txt*
+cat sample.txt
+diff sample.txt archive_lab/file1.txt && echo "original file restored"
+------------------------------------------------------------
+
+
+
+#Q7
+------------------------------------------------------------
+tar -czvf archive.tar.gz archive_lab
+ls -lh archive.tar.gz
+file archive.tar.gz
+------------------------------------------------------------
+
+
+
+#Q8
+------------------------------------------------------------
+tar -tzvf archive.tar.gz
+------------------------------------------------------------
+
+
+
+#Q9
+------------------------------------------------------------
+mkdir extracted_targz
+tar -xzvf archive.tar.gz -C extracted_targz
+ls -lR extracted_targz
+diff -r archive_lab extracted_targz/archive_lab && echo "extracted files match the original"
+------------------------------------------------------------
+
+
+
+#Q10
+------------------------------------------------------------
+zip files.zip archive_lab/file1.txt archive_lab/file2.txt archive_lab/file3.txt
+ls -l files.zip
+file files.zip
+------------------------------------------------------------
+
+
+
+#Q11
+------------------------------------------------------------
+unzip -l files.zip
+zipinfo files.zip
+------------------------------------------------------------
+
+
+
+#Q12
+------------------------------------------------------------
+unzip files.zip -d extracted_zip
+ls -lR extracted_zip
+------------------------------------------------------------
+
+
+
+#Q13
+------------------------------------------------------------
+mkdir extracted_one
+unzip files.zip archive_lab/file2.txt -d extracted_one
+ls -lR extracted_one
+cat extracted_one/archive_lab/file2.txt
+------------------------------------------------------------
+
+
+
+#Q14
+------------------------------------------------------------
+zip -r dir.zip archive_lab
+ls -l dir.zip
+unzip -l dir.zip
+unzip -t dir.zip
+------------------------------------------------------------
+
+
+
+#Q15
+------------------------------------------------------------
+tar -cvf bundle.tar archive_lab
+ls -l bundle.tar
+gzip bundle.tar
+ls -l bundle.tar.gz
+tar -tzvf bundle.tar.gz
+echo "tar only bundles many files into one archive file (no compression); gzip only compresses a single file. tar then gzip together give a .tar.gz"
+tar -czvf bundle2.tar.gz archive_lab
+ls -l bundle2.tar.gz
+------------------------------------------------------------
+
+
+
+#Q16
+------------------------------------------------------------
+tar -cvf update.tar archive_lab
+echo "This is an added file" > newfile.txt
+tar -rvf update.tar newfile.txt
+tar -tvf update.tar
+tar -tvf update.tar | grep newfile.txt
+------------------------------------------------------------
+
+
+
+#Q17
+------------------------------------------------------------
+tar -cvf compare.tar archive_lab
+tar -czvf compare.tar.gz archive_lab
+tar -tvf compare.tar
+tar -tzvf compare.tar.gz
+diff <(tar -tf compare.tar) <(tar -tzf compare.tar.gz) && echo "same contents"
+ls -l compare.tar compare.tar.gz
+seq 1 50000 > bigfile.txt
+tar -cvf big.tar bigfile.txt
+tar -czvf big.tar.gz bigfile.txt
+ls -lh big.tar big.tar.gz
+du -b big.tar big.tar.gz
+------------------------------------------------------------
+
+
+
+#Q18
+------------------------------------------------------------
+mkdir out_targz out_zip
+gunzip -c archive.tar.gz | tar -xvf - -C out_targz
+tar -xzvf archive.tar.gz -C out_targz
+unzip files.zip -d out_zip
+ls -lR out_targz
+ls -lR out_zip
+------------------------------------------------------------
+
+
+
+
+#Q19
+------------------------------------------------------------
+mkdir practice
+echo "Report data" > practice/report.txt
+echo "Notes data" > practice/notes.txt
+mkdir practice/sub
+echo "Nested data" > practice/sub/nested.txt
+tar -czvf backup.tar.gz practice
+tar -tzvf backup.tar.gz
+mkdir restore
+tar -xzvf backup.tar.gz -C restore
+ls -lR restore
+diff -r practice restore/practice && echo "backup restored successfully"
+------------------------------------------------------------
+
+
+
+#Q20
+------------------------------------------------------------
+mkdir workflow11
+cd workflow11
+mkdir data
+echo "Alpha" > data/a.txt
+echo "Beta" > data/b.txt
+echo "Gamma" > data/c.txt
+ls -l data
+tar -cvf data.tar data
+tar -tvf data.tar
+gzip data.tar
+ls -l data.tar.gz
+gunzip data.tar.gz
+ls -l data.tar
+tar -czvf data.tar.gz data
+tar -tzvf data.tar.gz
+mkdir out_tgz
+tar -xzvf data.tar.gz -C out_tgz
+diff -r data out_tgz/data && echo "tar.gz verified"
+zip -r data.zip data
+unzip -l data.zip
+unzip -t data.zip
+mkdir out_zip
+unzip data.zip -d out_zip
+diff -r data out_zip/data && echo "zip verified"
+ls -l
+cd ..

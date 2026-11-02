@@ -1,0 +1,228 @@
+#Q1
+------------------------------------------------------------
+rpm --version
+which rpm
+type rpm
+rpm -q rpm
+------------------------------------------------------------
+
+
+
+#Q2
+------------------------------------------------------------
+dnf --version
+which dnf
+rpm -q dnf
+------------------------------------------------------------
+
+
+
+
+#Q3
+------------------------------------------------------------
+rpm -qa | grep bash
+rpm -q bash
+rpm -q tree
+rpm -qa | wc -l
+rpm -qa | grep -i openssh
+------------------------------------------------------------
+
+
+
+#Q4
+------------------------------------------------------------
+rpm -qi bash
+------------------------------------------------------------
+
+
+
+#Q5
+------------------------------------------------------------
+rpm -ql bash
+rpm -qc bash
+rpm -qd bash
+rpm -ql bash | wc -l
+------------------------------------------------------------
+
+
+
+#Q6
+------------------------------------------------------------
+rpm -qf /etc/passwd
+rpm -qf /bin/ls
+rpm -qf /usr/bin/ssh
+------------------------------------------------------------
+
+
+
+#Q7
+------------------------------------------------------------
+rpm -qi bash | grep -i "install date"
+rpm -q --qf '%{NAME} %{VERSION}-%{RELEASE} installed on %{INSTALLTIME:date}\n' bash
+rpm -qi bash
+rpm -q --last bash
+rpm -qa --last | head
+------------------------------------------------------------
+
+
+
+#Q8
+------------------------------------------------------------
+dnf repolist
+dnf repolist --enabled
+dnf repolist --disabled
+dnf repolist --all
+ls /etc/yum.repos.d/
+------------------------------------------------------------
+
+
+
+#Q9
+------------------------------------------------------------
+dnf repoinfo baseos
+dnf repoinfo appstream
+cat /etc/yum.repos.d/*.repo | head -30
+------------------------------------------------------------
+
+
+
+#Q10
+------------------------------------------------------------
+dnf search tree
+dnf search all web server
+dnf list available | grep -i wget
+dnf list tree
+dnf info tree
+------------------------------------------------------------
+
+
+
+#Q11
+------------------------------------------------------------
+sudo dnf install tree -y
+rpm -q tree
+dnf list installed tree
+tree --version
+------------------------------------------------------------
+
+
+
+#Q12
+------------------------------------------------------------
+dnf repolist
+sudo dnf install wget -y --repo=appstream
+rpm -q wget
+dnf list installed wget
+dnf info wget
+------------------------------------------------------------
+
+
+
+#Q13
+------------------------------------------------------------
+dnf check-update
+dnf list updates
+dnf updateinfo list
+dnf updateinfo list security
+echo $?
+------------------------------------------------------------
+
+
+
+#Q14
+------------------------------------------------------------
+rpm -q wget
+sudo dnf update wget -y
+rpm -q wget
+dnf list installed wget
+------------------------------------------------------------
+
+
+
+#Q15
+------------------------------------------------------------
+dnf check-update | wc -l
+sudo dnf update -y
+dnf check-update
+sudo dnf history list | head -3
+rpm -qa --last | head -10
+------------------------------------------------------------
+
+
+
+
+#Q16
+------------------------------------------------------------
+sudo dnf remove tree -y
+rpm -q tree
+dnf list installed tree
+which tree || echo "tree command removed"
+------------------------------------------------------------
+
+
+
+#Q17
+------------------------------------------------------------
+dnf info wget
+dnf repoquery --qf '%{name} %{version}-%{release} %{repoid}' wget
+dnf list available wget
+dnf provides wget
+dnf provides /usr/bin/tree
+dnf provides '*/bin/tree'
+dnf repoquery --installed --qf '%{name} %{from_repo}' wget
+------------------------------------------------------------
+
+
+#Q18
+------------------------------------------------------------
+sudo dnf history
+sudo dnf history list
+sudo dnf history info 1
+sudo dnf history info last
+------------------------------------------------------------
+
+
+
+#Q19
+------------------------------------------------------------
+rpm -q tree
+
+sudo dnf install tree -y
+
+rpm -q tree
+rpm -qi tree
+rpm -ql tree
+rpm -V tree
+
+sudo dnf update tree -y
+rpm -q tree
+
+sudo dnf remove tree -y
+
+rpm -q tree
+sudo dnf history | head -5
+------------------------------------------------------------
+
+
+
+#Q20
+------------------------------------------------------------
+sudo dnf remove tree wget -y
+sudo dnf autoremove -y
+
+ls /etc/yum.repos.d/
+
+sudo dnf clean all
+sudo dnf makecache
+
+rpm -q tree wget
+dnf list installed tree wget
+
+dnf repolist --all
+ls -l /etc/yum.repos.d/
+
+rpm -q rpm dnf bash systemd kernel glibc
+sudo rpm -Va --nofiles 2>/dev/null | head
+sudo dnf check
+sudo dnf history | head -10
+------------------------------------------------------------

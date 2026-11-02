@@ -1,0 +1,248 @@
+#Q1
+------------------------------------------------------------
+dd if=/dev/zero of=$HOME/labfs.img bs=1M count=300
+TESTDEV=$(sudo losetup --find --show --partscan $HOME/labfs.img)
+sudo parted -s $TESTDEV mklabel msdos mkpart primary 1MiB 250MiB
+sudo partprobe $TESTDEV
+PART=${TESTDEV}p1
+echo $TESTDEV $PART
+lsblk
+lsblk $TESTDEV
+------------------------------------------------------------
+
+
+
+#Q2
+------------------------------------------------------------
+lsblk -f $PART
+sudo blkid $PART
+findmnt $PART || echo "not mounted"
+------------------------------------------------------------
+
+
+
+#Q3
+------------------------------------------------------------
+sudo mkfs.ext4 $PART
+lsblk -f $PART
+sudo blkid $PART
+------------------------------------------------------------
+
+
+
+#Q4
+------------------------------------------------------------
+sudo tune2fs -l $PART
+sudo dumpe2fs -h $PART
+sudo blkid -s UUID -o value $PART
+------------------------------------------------------------
+
+
+
+#Q5
+------------------------------------------------------------
+sudo mkdir -p /mnt/labfs
+ls -ld /mnt/labfs
+------------------------------------------------------------
+
+
+
+#Q6
+------------------------------------------------------------
+sudo mount $PART /mnt/labfs
+findmnt /mnt/labfs
+mount | grep labfs
+lsblk $TESTDEV
+------------------------------------------------------------
+
+
+
+#Q7
+------------------------------------------------------------
+df -h /mnt/labfs
+df -hT /mnt/labfs
+------------------------------------------------------------
+
+
+
+#Q8
+------------------------------------------------------------
+echo "Hello from labfs" | sudo tee /mnt/labfs/testfile.txt
+ls -l /mnt/labfs
+cat /mnt/labfs/testfile.txt
+df /mnt/labfs/testfile.txt
+findmnt -T /mnt/labfs/testfile.txt
+------------------------------------------------------------
+
+
+
+#Q9
+------------------------------------------------------------
+sudo umount /mnt/labfs
+findmnt /mnt/labfs || echo "not mounted"
+mount | grep labfs || echo "not in mount list"
+df -h | grep labfs || echo "not listed in df"
+ls -l /mnt/labfs
+------------------------------------------------------------
+
+
+
+#Q10
+------------------------------------------------------------
+cat /etc/fstab
+column -t /etc/fstab
+grep -v '^#' /etc/fstab
+------------------------------------------------------------
+
+
+
+#Q11
+------------------------------------------------------------
+UUID=$(sudo blkid -s UUID -o value $PART)
+echo $UUID
+sudo cp /etc/fstab /etc/fstab.bak
+echo "UUID=$UUID /mnt/labfs ext4 defaults,nofail 0 2" | sudo tee -a /etc/fstab
+tail -n 3 /etc/fstab
+------------------------------------------------------------
+
+
+
+#Q12
+------------------------------------------------------------
+sudo findmnt --verify
+sudo systemctl daemon-reload
+sudo mount -a
+findmnt /mnt/labfs
+df -hT /mnt/labfs
+------------------------------------------------------------
+
+
+#Q13
+------------------------------------------------------------
+sudo umount /mnt/labfs
+findmnt /mnt/labfs || echo "not mounted"
+sudo mount -a
+findmnt /mnt/labfs
+ls -l /mnt/labfs
+------------------------------------------------------------
+
+
+
+#Q14
+------------------------------------------------------------
+findmnt /mnt/labfs
+findmnt -o TARGET,SOURCE,FSTYPE,SIZE,USED,AVAIL,USE% /mnt/labfs
+df -hT /mnt/labfs
+------------------------------------------------------------
+
+
+
+#Q15
+------------------------------------------------------------
+sudo blkid -s UUID -o value $PART
+grep labfs /etc/fstab
+lsblk -o NAME,UUID,FSTYPE,MOUNTPOINT $PART
+ls -l /dev/disk/by-uuid/ | grep $(basename $PART)
+------------------------------------------------------------
+
+
+
+#Q16
+------------------------------------------------------------
+sudo umount /mnt/labfs
+sudo e2fsck -f $PART
+echo $?
+sudo fsck -fn $PART
+------------------------------------------------------------
+
+
+
+#Q17
+------------------------------------------------------------
+sudo mount $PART /mnt/labfs
+findmnt /mnt/labfs
+sudo e2fsck -fn $PART
+sudo umount /mnt/labfs
+findmnt /mnt/labfs || echo "not mounted"
+sudo e2fsck -f $PART
+echo $?
+------------------------------------------------------------
+
+
+
+#Q18
+------------------------------------------------------------
+sudo sed -i '\|/mnt/labfs|d' /etc/fstab
+echo "UUID=0000-WRONG-UUID /mnt/labfs ext4 defaults,nofail 0 2" | sudo tee -a /etc/fstab
+sudo findmnt --verify
+sudo mount -a
+findmnt /mnt/labfs || echo "not mounted - entry is wrong"
+sudo sed -i '\|/mnt/labfs|d' /etc/fstab
+UUID=$(sudo blkid -s UUID -o value $PART)
+echo "UUID=$UUID /mnt/labfs ext4 defaults,nofail 0 2" | sudo tee -a /etc/fstab
+sudo systemctl daemon-reload
+sudo findmnt --verify
+sudo mount -a
+findmnt /mnt/labfs
+df -hT /mnt/labfs
+------------------------------------------------------------
+
+
+
+#Q19
+------------------------------------------------------------
+sudo umount /mnt/labfs
+sudo sed -i '\|/mnt/labfs|d' /etc/fstab
+cat /etc/fstab
+sudo systemctl daemon-reload
+sudo mount -a
+findmnt /mnt/labfs || echo "not mounted"
+grep labfs /etc/fstab || echo "no labfs entry in fstab"
+diff /etc/fstab.bak /etc/fstab && echo "fstab matches original backup"
+------------------------------------------------------------
+
+
+
+#Q20
+------------------------------------------------------------
+dd if=/dev/zero of=$HOME/workflow.img bs=1M count=300
+WFDEV=$(sudo losetup --find --show --partscan $HOME/workflow.img)
+sudo parted -s $WFDEV mklabel msdos mkpart primary 1MiB 250MiB
+sudo partprobe $WFDEV
+WFPART=${WFDEV}p1
+lsblk $WFDEV
+sudo mkfs.ext4 $WFPART
+sudo mkdir -p /mnt/labfs
+sudo mount $WFPART /mnt/labfs
+findmnt /mnt/labfs
+df -hT /mnt/labfs
+echo "Workflow data" | sudo tee /mnt/labfs/data.txt
+ls -l /mnt/labfs
+cat /mnt/labfs/data.txt
+sudo umount /mnt/labfs
+WFUUID=$(sudo blkid -s UUID -o value $WFPART)
+echo $WFUUID
+sudo cp /etc/fstab /etc/fstab.bak
+echo "UUID=$WFUUID /mnt/labfs ext4 defaults,nofail 0 2" | sudo tee -a /etc/fstab
+sudo findmnt --verify
+sudo systemctl daemon-reload
+sudo mount -a
+findmnt /mnt/labfs
+cat /mnt/labfs/data.txt
+sudo umount /mnt/labfs
+sudo e2fsck -f $WFPART
+echo $?
+findmnt /mnt/labfs || echo "not mounted"
+sudo sed -i '\|/mnt/labfs|d' /etc/fstab
+diff /etc/fstab.bak /etc/fstab && echo "fstab restored"
+sudo systemctl daemon-reload
+sudo mount -a
+sudo losetup -a
+sudo losetup -d $WFDEV
+sudo losetup -d $TESTDEV
+rm -f $HOME/labfs.img $HOME/workflow.img
+sudo rmdir /mnt/labfs
+sudo rm -f /etc/fstab.bak
+lsblk
+findmnt /mnt/labfs || echo "clean"
+grep labfs /etc/fstab || echo "no lab entries in fstab"

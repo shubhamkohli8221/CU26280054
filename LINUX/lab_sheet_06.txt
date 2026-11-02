@@ -1,0 +1,246 @@
+#Q1
+mkdir lab6
+touch lab6/permissions.txt
+ls -l lab6
+cd lab6
+------------------------------------------------------------
+
+
+
+#Q2
+------------------------------------------------------------
+ls -l permissions.txt
+stat permissions.txt
+------------------------------------------------------------
+
+
+
+#Q3
+------------------------------------------------------------
+chmod u=rwx,g=rw,o= permissions.txt
+ls -l permissions.txt
+------------------------------------------------------------
+
+
+
+#Q4
+------------------------------------------------------------
+chmod 640 permissions.txt
+ls -l permissions.txt
+------------------------------------------------------------
+
+
+
+#Q5
+------------------------------------------------------------
+chmod 755 permissions.txt
+ls -l permissions.txt
+------------------------------------------------------------
+
+
+
+#Q6
+------------------------------------------------------------
+chmod u-x permissions.txt
+ls -l permissions.txt
+------------------------------------------------------------
+
+
+
+#Q7
+------------------------------------------------------------
+chmod g+rx permissions.txt
+ls -l permissions.txt
+------------------------------------------------------------
+
+
+
+#Q8
+------------------------------------------------------------
+chmod o-rwx permissions.txt
+ls -l permissions.txt
+------------------------------------------------------------
+
+
+
+#Q9
+------------------------------------------------------------
+mkdir securedata
+chmod 750 securedata
+ls -ld securedata
+------------------------------------------------------------
+
+
+
+#Q10
+------------------------------------------------------------
+mkdir practice
+echo "hello" > practice/f1.txt
+echo '#!/bin/bash
+echo "script running"' > practice/script.sh
+
+chmod 000 practice/f1.txt
+cat practice/f1.txt
+chmod u+r practice/f1.txt
+cat practice/f1.txt
+echo "more" >> practice/f1.txt
+chmod u+w practice/f1.txt
+echo "more" >> practice/f1.txt
+./practice/script.sh
+chmod u+x practice/script.sh
+./practice/script.sh
+
+chmod u-r practice
+ls practice
+cd practice
+cd ..
+chmod u+r,u-x practice
+ls practice
+cd practice
+chmod u+rx,u-w practice
+touch practice/new.txt
+rm practice/f1.txt
+chmod u+w practice
+touch practice/new.txt
+chmod 755 practice
+------------------------------------------------------------
+
+
+
+#Q11
+------------------------------------------------------------
+umask
+umask -S
+OLD_UMASK=$(umask)
+echo "Recorded umask: $OLD_UMASK"
+------------------------------------------------------------
+
+
+
+#Q12
+------------------------------------------------------------
+umask 027
+umask
+touch umaskfile.txt
+mkdir umaskdir
+ls -l umaskfile.txt
+ls -ld umaskdir
+------------------------------------------------------------
+
+
+
+#Q13
+------------------------------------------------------------
+umask 0022
+umask
+umask -S
+------------------------------------------------------------
+
+
+
+#Q14
+------------------------------------------------------------
+sudo groupadd aclgroup
+sudo useradd -m -s /bin/bash acluser
+sudo passwd acluser
+id acluser
+touch aclfile.txt
+ls -l aclfile.txt
+------------------------------------------------------------
+
+
+
+#Q15
+------------------------------------------------------------
+getfacl aclfile.txt
+------------------------------------------------------------
+
+
+
+#Q16
+------------------------------------------------------------
+setfacl -m u:acluser:rw aclfile.txt
+getfacl aclfile.txt
+ls -l aclfile.txt
+------------------------------------------------------------
+
+
+
+#Q17
+------------------------------------------------------------
+setfacl -m g:aclgroup:r aclfile.txt
+getfacl aclfile.txt
+------------------------------------------------------------
+
+
+
+#Q18
+------------------------------------------------------------
+setfacl -m u:acluser:r aclfile.txt
+getfacl aclfile.txt
+
+setfacl -x u:acluser aclfile.txt
+getfacl aclfile.txt
+------------------------------------------------------------
+
+
+
+#Q19
+------------------------------------------------------------
+mkdir acldir
+setfacl -m d:u:acluser:rw acldir
+setfacl -m d:g:aclgroup:r acldir
+getfacl acldir
+touch acldir/testfile.txt
+getfacl acldir/testfile.txt
+ls -l acldir/testfile.txt
+------------------------------------------------------------
+
+
+
+#Q20
+------------------------------------------------------------
+mkdir workflow6 && cd workflow6
+touch data.txt
+mkdir shared
+
+chmod 640 data.txt
+chmod 750 shared
+ls -l data.txt
+ls -ld shared
+
+umask
+umask 077
+touch private.txt
+mkdir privatedir
+ls -l private.txt
+ls -ld privatedir
+umask 0022
+
+sudo useradd -m wfuser
+sudo groupadd wfgroup
+setfacl -m u:wfuser:rw data.txt
+setfacl -m g:wfgroup:r data.txt
+setfacl -m d:u:wfuser:rwx shared
+getfacl data.txt
+getfacl shared
+touch shared/inherit.txt
+getfacl shared/inherit.txt
+
+setfacl -x u:wfuser data.txt
+getfacl data.txt
+
+setfacl -b data.txt
+setfacl -k shared
+cd ..
+rm -rf workflow6 practice acldir umaskfile.txt umaskdir aclfile.txt
+sudo userdel -r wfuser
+sudo userdel -r acluser
+sudo groupdel wfgroup
+sudo groupdel aclgroup
+rm -rf ~/lab6
+
+ls
+getent passwd acluser wfuser || echo "test users removed"
+getent group aclgroup wfgroup || echo "test groups removed"
+umask

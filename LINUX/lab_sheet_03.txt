@@ -1,0 +1,308 @@
+#Q1
+#!/bin/bash
+name="DarkLord"
+echo "Hello, $name! Welcome to Linux Administration Lab."
+------------------------------------------------
+
+
+#Q2
+#!/bin/bash
+read -p "Enter your name: " name
+read -p "Enter your branch: " branch
+read -p "Enter your semester: " semester
+
+echo
+echo "Welcome, $name!"
+echo "Branch: $branch"
+echo "Semester: $semester"
+------------------------------------------------
+
+
+#Q3
+#!/bin/bash
+read -p "Enter first integer: " a
+read -p "Enter second integer: " b
+
+echo "Sum: $((a + b))"
+echo "Difference: $((a - b))"
+echo "Product: $((a * b))"
+
+if [ "$b" -ne 0 ]; then
+    echo "Quotient: $((a / b))"
+else
+    echo "Quotient: Cannot divide by zero"
+fi
+------------------------------------------------
+
+
+#Q4
+#!/bin/bash
+current_date=$(date)
+current_dir=$(pwd)
+username=$(whoami)
+
+echo "Current Date: $current_date"
+echo "Current Directory: $current_dir"
+echo "Logged-in User: $username"
+------------------------------------------------
+
+
+
+#Q5
+#!/bin/bash
+read -p "Enter an integer: " n
+
+if [ "$n" -gt 0 ]; then
+    echo "Positive"
+elif [ "$n" -lt 0 ]; then
+    echo "Negative"
+else
+    echo "Zero"
+fi
+------------------------------------------------
+
+
+
+#Q6
+#!/bin/bash
+if [ $# -lt 1 ]; then
+    echo "Usage: $0 <integer>"
+    exit 1
+fi
+
+if [ $(( $1 % 2 )) -eq 0 ]; then
+    echo "$1 is even"
+else
+    echo "$1 is odd"
+fi
+------------------------------------------------
+
+
+
+#Q7
+#!/bin/bash
+path="$1"
+
+if [ -z "$path" ]; then
+    echo "Usage: $0 <path>"
+    exit 1
+fi
+
+if [ -f "$path" ]; then
+    echo "$path is a regular file."
+    if [ -x "$path" ]; then
+        echo "The file is executable."
+    else
+        echo "The file is not executable."
+    fi
+elif [ -d "$path" ]; then
+    echo "$path is a directory."
+else
+    echo "$path is neither a regular file nor a directory."
+fi
+------------------------------------------------
+
+
+
+#Q8
+#!/bin/bash
+if [ $# -lt 1 ]; then
+    echo "Usage: $0 <number>"
+    exit 1
+fi
+
+for i in {1..10}; do
+    echo "$1 x $i = $(( $1 * i ))"
+done
+------------------------------------------------
+
+
+
+#Q9
+#!/bin/bash
+for file in data/*.txt; do
+    if [ -f "$file" ]; then
+        echo "Found text file: $file"
+    fi
+done
+------------------------------------------------
+
+
+
+#Q10
+#!/bin/bash
+count=10
+
+while [ "$count" -ge 1 ]; do
+    echo "$count"
+    count=$((count - 1))
+done
+
+echo "Done!"
+------------------------------------------------
+
+
+
+#Q11
+#!/bin/bash
+echo "Script name (\$0): $0"
+echo "First argument (\$1): $1"
+echo "Second argument (\$2): $2"
+echo "Number of arguments (\$#): $#"
+echo "All arguments (\$@): $@"
+------------------------------------------------
+
+
+
+#Q12
+#!/bin/bash
+if [ $# -lt 1 ]; then
+    echo "Usage: $0 <directory>"
+    exit 1
+fi
+
+if [ -d "$1" ]; then
+    echo "Directory exists: $1"
+    exit 0
+else
+    echo "Directory does not exist: $1"
+    exit 1
+fi
+------------------------------------------------
+
+
+
+#Q13
+#!/bin/bash
+
+ls data > output/files.txt
+
+echo "After >:"
+cat output/files.txt
+
+ls data >> output/files.txt
+
+echo
+echo "After >>:"
+cat output/files.txt
+------------------------------------------------
+
+
+
+#Q14
+#!/bin/bash
+if [ $# -lt 1 ]; then
+    echo "Usage: $0 <message>"
+    exit 1
+fi
+
+echo "$(date '+%Y-%m-%d %H:%M:%S') - $*" >> logs/activity.log
+echo "Log entry added."
+------------------------------------------------
+
+
+
+#Q15
+#!/bin/bash
+
+sort < data/names.txt
+
+echo
+echo "Sorted names without duplicates:"
+sort -u < data/names.txt
+------------------------------------------------
+
+
+
+#Q16
+#!/bin/bash
+
+ls /path/that/does/not/exist 2> logs/errors.log
+
+echo "Error log:"
+cat logs/errors.log
+------------------------------------------------
+
+
+
+#Q17
+#!/bin/bash
+
+ls data/names.txt /path/that/does/not/exist > logs/combined.log 2>&1
+
+echo "Combined output and error log:"
+cat logs/combined.log
+------------------------------------------------
+
+
+
+#Q18
+#!/bin/bash
+
+ps aux | grep bash
+
+echo
+echo "Number of matching lines:"
+ps aux | grep bash | wc -l
+------------------------------------------------
+
+
+
+#Q19
+#!/bin/bash
+if [ $# -lt 1 ]; then
+    echo "Usage: $0 <directory>"
+    exit 1
+fi
+
+dir="$1"
+
+if [ ! -d "$dir" ]; then
+    echo "Directory does not exist: $dir"
+    exit 1
+fi
+
+count=0
+
+for file in "$dir"/*.bak; do
+    if [ -f "$file" ]; then
+        echo "Backup found: $file"
+        count=$((count + 1))
+    fi
+done
+
+echo "Total backup files: $count"
+
+if [ "$count" -eq 0 ]; then
+    echo "$(date '+%Y-%m-%d %H:%M:%S') - No backup files found in $dir" >> logs/backup_log.txt
+fi
+------------------------------------------------
+
+
+
+#Q20
+#!/bin/bash
+if [ $# -ne 1 ]; then
+    echo "Usage: $0 <filename>"
+    exit 1
+fi
+
+file="$1"
+
+if [ ! -e "$file" ]; then
+    echo "Error: File does not exist."
+    echo "$(date '+%Y-%m-%d %H:%M:%S') - FAILED: $file does not exist" >> logs/execution_history.log
+    exit 1
+fi
+
+if [ ! -r "$file" ]; then
+    echo "Error: File is not readable."
+    echo "$(date '+%Y-%m-%d %H:%M:%S') - FAILED: $file is not readable" >> logs/execution_history.log
+    exit 1
+fi
+
+echo "File: $file"
+echo "Line/Word/Character counts:"
+wc "$file"
+
+echo "$(date '+%Y-%m-%d %H:%M:%S') - SUCCESS: processed $file" >> logs/execution_history.log
