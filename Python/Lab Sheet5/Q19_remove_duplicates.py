@@ -1,0 +1,5 @@
+# Q19: Remove duplicate elements from a tuple (preserve first occurrence)
+items = (1, 2, 2, 3, 1, 4, 3)
+unique_items = tuple(dict.fromkeys(items))
+print("Original tuple:", items)
+print("Tuple without duplicates:", unique_items)
